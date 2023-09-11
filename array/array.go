@@ -79,13 +79,8 @@ func (a *array) Intersect(another *array) array {
 			}
 		}
 	}
-	unique := Array(3)
-	for i := 0; i < commons.count; i++ {
-		if !unique.Contains(commons.items[i].(int)) {
-			unique.Insert(commons.items[i].(int))
-		}
-	}
-	return unique
+
+	return commons.removeCommons()
 }
 
 func (a *array) Contains(item int) bool {
@@ -95,6 +90,16 @@ func (a *array) Contains(item int) bool {
 		}
 	}
 	return false
+}
+
+func (a *array) removeCommons() array {
+	unique := Array(3)
+	for i := 0; i < a.count; i++ {
+		if !unique.Contains(a.items[i].(int)) {
+			unique.Insert(a.items[i].(int))
+		}
+	}
+	return unique
 }
 
 func (a *array) Print() {
