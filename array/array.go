@@ -33,6 +33,21 @@ func (a *array) RemoveAt(index int) error {
 	if index < 0 || index >= len(a.items) {
 		return errors.New("count is invalid")
 	}
+
+	// remove last index
+	if index == a.count-1 {
+		a.items[index] = nil
+		a.count--
+		return nil
+	}
+
+	for i := index; i < a.count; i++ {
+		if i+1 == a.count {
+			continue
+		}
+		a.items[i] = a.items[i+1]
+	}
+	a.count--
 	return nil
 }
 

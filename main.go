@@ -9,7 +9,11 @@ func main() {
 	numbers.Insert(1)
 	numbers.Insert(2)
 	numbers.Insert(3)
-	numbers.Insert(4)
+	// numbers.Insert(4)
+
+	numbers.Print()
+
+	numbers.RemoveAt(2)
 
 	numbers.Print()
 }
