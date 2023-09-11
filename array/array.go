@@ -79,7 +79,22 @@ func (a *array) Intersect(another *array) array {
 			}
 		}
 	}
-	return commons
+	unique := Array(3)
+	for i := 0; i < commons.count; i++ {
+		if !unique.Contains(commons.items[i].(int)) {
+			unique.Insert(commons.items[i].(int))
+		}
+	}
+	return unique
+}
+
+func (a *array) Contains(item int) bool {
+	for i := 0; i < a.count; i++ {
+		if a.items[i] == item {
+			return true
+		}
+	}
+	return false
 }
 
 func (a *array) Print() {
@@ -92,3 +107,6 @@ func (a *array) Print() {
 	}
 	fmt.Printf("]\n")
 }
+
+// [1, 2, 2, 5]
+// [1, 2, 5]
