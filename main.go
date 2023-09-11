@@ -9,13 +9,15 @@ func main() {
 	numbers.Insert(1)
 	numbers.Insert(2)
 	numbers.Insert(3)
-	// numbers.Insert(4)
+	numbers.Insert(4)
+	numbers.Insert(5)
+	numbers.Insert(5)
+	numbers.Insert(5)
 
-	// numbers.Print()
-	//
-	// numbers.RemoveAt(2)
-	//
-	// numbers.Print()
+	another := array.Array(3)
+	another.Insert(5)
+	another.Insert(4)
 
-	println(numbers.IndexOf(3))
+	c := numbers.Intersect(&another)
+	c.Print()
 }

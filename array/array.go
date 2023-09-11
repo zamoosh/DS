@@ -60,6 +60,28 @@ func (a *array) IndexOf(item int) int {
 	return -1
 }
 
+func (a *array) Max() int {
+	item := 0
+	for i := 0; i < a.count; i++ {
+		if a.items[i].(int) >= item {
+			item = a.items[i].(int)
+		}
+	}
+	return item
+}
+
+func (a *array) Intersect(another *array) array {
+	commons := Array(3)
+	for i := 0; i < a.count; i++ {
+		for j := 0; j < another.count; j++ {
+			if a.items[i] == another.items[j] {
+				commons.Insert(a.items[i].(int))
+			}
+		}
+	}
+	return commons
+}
+
 func (a *array) Print() {
 	fmt.Printf("[")
 	for i := 0; i < a.count; i++ {
