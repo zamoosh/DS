@@ -11,9 +11,11 @@ func main() {
 	numbers.Insert(3)
 	// numbers.Insert(4)
 
-	numbers.Print()
+	// numbers.Print()
+	//
+	// numbers.RemoveAt(2)
+	//
+	// numbers.Print()
 
-	numbers.RemoveAt(2)
-
-	numbers.Print()
+	println(numbers.IndexOf(3))
 }

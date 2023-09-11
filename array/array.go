@@ -51,6 +51,15 @@ func (a *array) RemoveAt(index int) error {
 	return nil
 }
 
+func (a *array) IndexOf(item int) int {
+	for i := 0; i < a.count; i++ {
+		if item == a.items[i] {
+			return i
+		}
+	}
+	return -1
+}
+
 func (a *array) Print() {
 	fmt.Printf("[")
 	for i := 0; i < a.count; i++ {
