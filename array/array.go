@@ -3,6 +3,7 @@ package array
 import (
 	"errors"
 	"fmt"
+	"log"
 )
 
 type array struct {
@@ -19,11 +20,7 @@ func Array(size int) array {
 
 func (a *array) Insert(item int) {
 	if a.count == len(a.items) {
-		newArr := make([]interface{}, len(a.items)*2)
-		for i := 0; i < a.count; i++ {
-			newArr[i] = a.items[i]
-		}
-		a.items = newArr
+		a.grow()
 	}
 	a.items[a.count] = item
 	a.count++
@@ -70,6 +67,16 @@ func (a *array) Max() int {
 	return item
 }
 
+func (a *array) grow() {
+	if a.count == len(a.items) {
+		newArr := make([]interface{}, len(a.items)*2)
+		for i := 0; i < a.count; i++ {
+			newArr[i] = a.items[i]
+		}
+		a.items = newArr
+	}
+}
+
 func (a *array) Intersect(another *array) array {
 	commons := Array(3)
 	for i := 0; i < a.count; i++ {
@@ -102,6 +109,40 @@ func (a *array) removeCommons() array {
 	return unique
 }
 
+func (a *array) Reverse() array {
+	reverse := Array(a.count)
+	for i := a.count - 1; i >= 0; i-- {
+		reverse.Insert(a.items[i].(int))
+	}
+	return reverse
+}
+
+func (a *array) InsertAt(item int, index int) {
+	if index == a.count {
+		a.Insert(item)
+	} else if index == 0 {
+		if a.count == len(a.items) {
+			a.grow()
+		}
+		for i := a.count - 1; i >= 0; i-- {
+			a.items[i+1] = a.items[i]
+		}
+		a.items[index] = item
+		a.count++
+	} else if index > 0 && index < a.count {
+		if a.count == len(a.items) {
+			a.grow()
+		}
+		for i := a.count - 1; i >= index; i-- {
+			a.items[i+1] = a.items[i]
+		}
+		a.items[index] = item
+		a.count++
+	} else {
+		log.Fatalln("invalid index")
+	}
+}
+
 func (a *array) Print() {
 	fmt.Printf("[")
 	for i := 0; i < a.count; i++ {
@@ -113,5 +154,5 @@ func (a *array) Print() {
 	fmt.Printf("]\n")
 }
 
-// [1, 2, 2, 5]
-// [1, 2, 5]
+// [1, 2, 2, 5] -> InsertAt(0, 2): index=2
+// [1, 2, 0, 2, 5]
