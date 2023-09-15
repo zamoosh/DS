@@ -1,6 +1,9 @@
 package linkList
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 type node struct {
 	next  *node
@@ -10,6 +13,7 @@ type node struct {
 type linkList struct {
 	first *node
 	last  *node
+	size  int
 }
 
 func LinkList() linkList {
@@ -17,43 +21,67 @@ func LinkList() linkList {
 	return l
 }
 
+func (l *linkList) isEmpty() bool {
+	if l.first != nil {
+		return false
+	}
+	return true
+}
+
 func (l *linkList) AddFirst(item int) {
-	if l.first == nil {
-		l.first = &node{next: nil, value: item}
-		l.last = l.first
+	n := &node{next: nil, value: item}
+	if l.isEmpty() {
+		l.first = n
+		l.last = n
 	} else {
 		f := l.first
-		l.first = &node{next: f, value: item}
+		l.first = n
+		l.first.next = f
 	}
+	l.size++
 }
 
 func (l *linkList) AddLast(item int) {
-	if l.first == nil && l.last == nil {
+	if l.isEmpty() {
 		l.AddFirst(item)
 	} else {
-		n := &node{next: nil, value: item}
-		l.last.next = n
-		l.last = n
+		last := l.last
+		l.last = &node{next: nil, value: item}
+		last.next = l.last
+		l.size++
 	}
 }
 
 func (l *linkList) DeleteFirst() {
+	if l.isEmpty() {
+		log.Panic("linklist is empty")
+	}
 	next := l.first.next
 	l.first.next = nil
 	l.first = next
+	l.size--
 }
 
 func (l *linkList) DeleteLast() {
-	n := l.first
-	for {
-		if n.next == l.last {
-			break
-		} else {
-			n = n.next
-		}
+	if l.isEmpty() {
+		log.Panic("linklist is empty")
 	}
-	l.last = n
-	l.last.next = nil
+	n := l.first
+
+	if l.first == l.last {
+		l.first = nil
+	} else {
+		for {
+			if n.next == l.last {
+				break
+			} else {
+				n = n.next
+			}
+		}
+		l.last = n
+		l.last.next = nil
+	}
+	l.size--
 }
 
 func (l *linkList) Contains(item int) bool {
@@ -88,6 +116,25 @@ func (l *linkList) IndexOf(item int) int {
 		}
 	}
 	return -1
+}
+
+func (l *linkList) Size() int {
+	return l.size
+}
+
+func (l *linkList) ToArray() []int {
+	index := 0
+	arr := make([]int, l.size)
+	n := l.first
+	for {
+		if n == nil {
+			break
+		} else {
+			arr[index] = n.value
+			n = n.next
+		}
+	}
+	return arr
 }
 
 func (l *linkList) Print() {
