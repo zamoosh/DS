@@ -198,8 +198,53 @@ func (l *linkList) KthNodeFromEnd(k int) int {
 	return a.value
 }
 
-func (l *linkList) PrintMiddle() {
+func (l *linkList) PrintMiddleOld() {
 
+}
+
+func (l *linkList) PrintMiddle() {
+	if l.isEmpty() {
+		log.Panic("linklist is empty")
+	}
+
+	if l.first == l.last {
+		fmt.Println(l.first.value)
+		return
+	}
+
+	count := 0
+	a := l.first
+	b := l.first
+
+	for {
+		b = b.next
+		a = a.next
+		count++
+		if b == l.last {
+			break
+		}
+		b = b.next
+		count++
+
+		// ODD NODES
+		if b == l.last {
+			count++
+			break
+		}
+		// END ODD NODES
+		
+		// EVEN NODES
+		if b.next == l.last {
+			count += 2
+			break
+		}
+		// END EVEN NODES
+	}
+	if count%2 == 0 {
+		fmt.Printf("[%v, %v]\n", a.value, a.next.value)
+	} else {
+		fmt.Println(a.value)
+	}
 }
 
 func (l *linkList) Print() {
