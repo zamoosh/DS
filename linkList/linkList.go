@@ -199,7 +199,17 @@ func (l *linkList) KthNodeFromEnd(k int) int {
 }
 
 func (l *linkList) PrintMiddleOld() {
+	if l.isEmpty() {
+		log.Panic("linklist is empty")
+	}
 
+	arr := l.ToArray()
+	length := len(arr)
+	if length%2 == 0 {
+		fmt.Printf("[%v, %v]\n", arr[length/2-1], arr[length/2])
+	} else {
+		fmt.Printf("[%v]\n", arr[length/2])
+	}
 }
 
 func (l *linkList) PrintMiddle() {
@@ -207,43 +217,24 @@ func (l *linkList) PrintMiddle() {
 		log.Panic("linklist is empty")
 	}
 
-	if l.first == l.last {
-		fmt.Println(l.first.value)
-		return
-	}
-
 	count := 0
 	a := l.first
 	b := l.first
 
 	for {
-		b = b.next
-		a = a.next
-		count++
-		if b == l.last {
-			break
-		}
-		b = b.next
-		count++
-
-		// ODD NODES
-		if b == l.last {
-			count++
-			break
-		}
-		// END ODD NODES
-		
-		// EVEN NODES
-		if b.next == l.last {
+		if b != l.last && b.next != l.last {
+			b = b.next.next
+			a = a.next
 			count += 2
+		} else {
 			break
 		}
-		// END EVEN NODES
 	}
-	if count%2 == 0 {
-		fmt.Printf("[%v, %v]\n", a.value, a.next.value)
+
+	if b == l.last {
+		fmt.Printf("[%v]\n", a.value)
 	} else {
-		fmt.Println(a.value)
+		fmt.Printf("[%v, %v]\n", a.value, a.next.value)
 	}
 }
 
