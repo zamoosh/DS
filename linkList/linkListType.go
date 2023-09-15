@@ -5,30 +5,25 @@ import (
 	"log"
 )
 
-type node struct {
-	next  *node
-	value int
-}
-
-type linkList struct {
+type LinkList struct {
 	first *node
 	last  *node
 	size  int
 }
 
-func NewLinkList() linkList {
-	l := linkList{first: nil, last: nil}
+func NewLinkListType() LinkList {
+	l := LinkList{first: nil, last: nil}
 	return l
 }
 
-func (l *linkList) isEmpty() bool {
+func (l *LinkList) isEmpty() bool {
 	if l.first != nil {
 		return false
 	}
 	return true
 }
 
-func (l *linkList) AddFirst(item int) {
+func (l *LinkList) AddFirst(item int) {
 	n := &node{next: nil, value: item}
 	if l.isEmpty() {
 		l.first = n
@@ -41,7 +36,7 @@ func (l *linkList) AddFirst(item int) {
 	l.size++
 }
 
-func (l *linkList) AddLast(item int) {
+func (l *LinkList) AddLast(item int) {
 	if l.isEmpty() {
 		l.AddFirst(item)
 	} else {
@@ -52,7 +47,7 @@ func (l *linkList) AddLast(item int) {
 	}
 }
 
-func (l *linkList) DeleteFirst() {
+func (l *LinkList) DeleteFirst() {
 	if l.isEmpty() {
 		log.Panic("linklist is empty")
 	}
@@ -62,7 +57,7 @@ func (l *linkList) DeleteFirst() {
 	l.size--
 }
 
-func (l *linkList) DeleteLast() {
+func (l *LinkList) DeleteLast() {
 	if l.isEmpty() {
 		log.Panic("linklist is empty")
 	}
@@ -84,7 +79,7 @@ func (l *linkList) DeleteLast() {
 	l.size--
 }
 
-func (l *linkList) Contains(item int) bool {
+func (l *LinkList) Contains(item int) bool {
 	n := l.first
 	for {
 		if n == nil {
@@ -100,7 +95,7 @@ func (l *linkList) Contains(item int) bool {
 	return false
 }
 
-func (l *linkList) IndexOf(item int) int {
+func (l *LinkList) IndexOf(item int) int {
 	index := 0
 	n := l.first
 	for {
@@ -118,11 +113,11 @@ func (l *linkList) IndexOf(item int) int {
 	return -1
 }
 
-func (l *linkList) Size() int {
+func (l *LinkList) Size() int {
 	return l.size
 }
 
-func (l *linkList) ToArray() []int {
+func (l *LinkList) ToArray() []int {
 	index := 0
 	arr := make([]int, l.size)
 	if l.first == l.last {
@@ -142,7 +137,7 @@ func (l *linkList) ToArray() []int {
 	return arr
 }
 
-func (l *linkList) Reverse() {
+func (l *LinkList) Reverse() {
 	items := l.ToArray()
 
 	for {
@@ -158,7 +153,7 @@ func (l *linkList) Reverse() {
 	}
 }
 
-func (l *linkList) KthNodeFromEndOld(k int) int {
+func (l *LinkList) KthNodeFromEndOld(k int) int {
 	if l.isEmpty() {
 		log.Panic("linklist is empty")
 	}
@@ -172,7 +167,7 @@ func (l *linkList) KthNodeFromEndOld(k int) int {
 	return arr[k]
 }
 
-func (l *linkList) KthNodeFromEnd(k int) int {
+func (l *LinkList) KthNodeFromEnd(k int) int {
 	if l.isEmpty() {
 		log.Panic("linklist is empty")
 	}
@@ -198,7 +193,7 @@ func (l *linkList) KthNodeFromEnd(k int) int {
 	return a.value
 }
 
-func (l *linkList) PrintMiddleOld() {
+func (l *LinkList) PrintMiddleOld() {
 	if l.isEmpty() {
 		log.Panic("linklist is empty")
 	}
@@ -212,7 +207,7 @@ func (l *linkList) PrintMiddleOld() {
 	}
 }
 
-func (l *linkList) PrintMiddle() {
+func (l *LinkList) PrintMiddle() {
 	if l.isEmpty() {
 		log.Panic("linklist is empty")
 	}
@@ -238,7 +233,7 @@ func (l *linkList) PrintMiddle() {
 	}
 }
 
-func (l *linkList) Print() {
+func (l *LinkList) Print() {
 	fmt.Print("[")
 	n := l.first
 	for {

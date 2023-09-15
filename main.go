@@ -1,22 +1,20 @@
 package main
 
 import (
-	"ds/linkList"
+	"ds/stack"
 )
 
 func main() {
-	numbers := linkList.LinkList()
-	numbers.AddLast(10)
-	numbers.AddLast(20)
-	numbers.AddLast(30)
-	numbers.AddLast(40)
-	numbers.AddLast(50)
-	numbers.AddLast(60)
-	// numbers.AddLast(70)
+	numbers := stack.NewStack()
+	numbers.Push(10)
+	numbers.Push(20)
+	numbers.Push(30)
+	numbers.Push(40)
+	numbers.Push(50)
 
 	numbers.Print()
-	// println(numbers.KthNodeFromEnd(1))
-	numbers.PrintMiddle()
-	numbers.PrintMiddleOld()
 	
+	println(numbers.Pop())
+	
+	numbers.Print()
 }
