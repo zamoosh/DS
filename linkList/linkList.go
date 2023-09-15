@@ -125,13 +125,19 @@ func (l *linkList) Size() int {
 func (l *linkList) ToArray() []int {
 	index := 0
 	arr := make([]int, l.size)
-	n := l.first
-	for {
-		if n == nil {
-			break
-		} else {
-			arr[index] = n.value
-			n = n.next
+	fmt.Println(arr)
+	if l.first == l.last {
+		arr[index] = l.first.value
+	} else {
+		n := l.first
+		for {
+			if n == nil {
+				break
+			} else {
+				arr[index] = n.value
+				n = n.next
+				index++
+			}
 		}
 	}
 	return arr
