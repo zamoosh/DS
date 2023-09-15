@@ -125,7 +125,6 @@ func (l *linkList) Size() int {
 func (l *linkList) ToArray() []int {
 	index := 0
 	arr := make([]int, l.size)
-	fmt.Println(arr)
 	if l.first == l.last {
 		arr[index] = l.first.value
 	} else {
@@ -141,6 +140,66 @@ func (l *linkList) ToArray() []int {
 		}
 	}
 	return arr
+}
+
+func (l *linkList) Reverse() {
+	items := l.ToArray()
+
+	for {
+		n := l.first
+		if n == nil {
+			break
+		}
+		l.DeleteFirst()
+	}
+
+	for i := 0; i < len(items); i++ {
+		l.AddFirst(items[i])
+	}
+}
+
+func (l *linkList) KthNodeFromEndOld(k int) int {
+	if l.isEmpty() {
+		log.Panic("linklist is empty")
+	}
+	if k < 1 || k > l.size {
+		log.Panic("k is invalid")
+	}
+
+	k--
+	l.Reverse()
+	arr := l.ToArray()
+	return arr[k]
+}
+
+func (l *linkList) KthNodeFromEnd(k int) int {
+	if l.isEmpty() {
+		log.Panic("linklist is empty")
+	}
+
+	a := l.first
+	b := l.first
+	for i := 0; i < k-1; i++ {
+		b = b.next
+		if b == nil {
+			log.Panic("k is invalid")
+		}
+	}
+
+	for {
+		if b == l.last {
+			break
+		}
+
+		a = a.next
+		b = b.next
+	}
+
+	return a.value
+}
+
+func (l *linkList) PrintMiddle() {
+
 }
 
 func (l *linkList) Print() {
