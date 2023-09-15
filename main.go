@@ -1,30 +1,23 @@
 package main
 
 import (
-	"ds/array"
+	"ds/linkList"
 )
 
 func main() {
-	numbers := array.Array(3)
-	numbers.Insert(1)
-	numbers.Insert(2)
-	numbers.Insert(3)
-	numbers.Insert(4)
-	numbers.Insert(5)
-	numbers.Insert(6)
-	// numbers.Insert(5)
-	// numbers.Insert(5)
+	numbers := linkList.LinkList()
+	numbers.AddFirst(30)
+	numbers.AddLast(10)
+	numbers.AddLast(20)
+	numbers.AddFirst(40)
+	numbers.AddFirst(50)
 
 	numbers.Print()
-	// another := array.Array(3)
-	// another.Insert(5)
-	// another.Insert(4)
+
+	// numbers.DeleteLast()
+	// numbers.DeleteFirst()
 	//
-	// c := numbers.Intersect(&another)
-	// c.Print()
-	//
-	// reverse := numbers.Reverse()
-	// reverse.Print()
-	numbers.InsertAt(0, 4)
-	numbers.Print()
+	// numbers.Print()
+
+	println(numbers.IndexOf(10))
 }
