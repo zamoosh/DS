@@ -11,7 +11,7 @@ type array struct {
 	count int
 }
 
-func Array(size int) array {
+func NewArray(size int) array {
 	return array{
 		items: make([]interface{}, size),
 		count: 0,
@@ -28,7 +28,7 @@ func (a *array) Insert(item int) {
 
 func (a *array) RemoveAt(index int) error {
 	if index < 0 || index >= len(a.items) {
-		return errors.New("count is invalid")
+		return errors.New("Count is invalid")
 	}
 
 	// remove last index
@@ -78,7 +78,7 @@ func (a *array) grow() {
 }
 
 func (a *array) Intersect(another *array) array {
-	commons := Array(3)
+	commons := NewArray(3)
 	for i := 0; i < a.count; i++ {
 		for j := 0; j < another.count; j++ {
 			if a.items[i] == another.items[j] {
@@ -100,7 +100,7 @@ func (a *array) Contains(item int) bool {
 }
 
 func (a *array) removeCommons() array {
-	unique := Array(3)
+	unique := NewArray(3)
 	for i := 0; i < a.count; i++ {
 		if !unique.Contains(a.items[i].(int)) {
 			unique.Insert(a.items[i].(int))
@@ -110,7 +110,7 @@ func (a *array) removeCommons() array {
 }
 
 func (a *array) Reverse() array {
-	reverse := Array(a.count)
+	reverse := NewArray(a.count)
 	for i := a.count - 1; i >= 0; i-- {
 		reverse.Insert(a.items[i].(int))
 	}
