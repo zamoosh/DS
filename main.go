@@ -1,10 +1,11 @@
 package main
 
-import "ds/stack"
+import (
+	"ds/stack"
+)
 
 func main() {
-	str := "(1 + 2) * [3] <[swe]r([23])>"
-	
-	items := stack.NewStack[string]()
+	str := "{s<s(s)s>sdf(we)s{d}w[e<f>w(e)f[s]d]ewf}"
+	items := stack.NewStack()
 	println(items.IsStable(str))
 }
