@@ -112,7 +112,7 @@ func (a *AnyArray[T]) IndexOf(item any) int {
 }
 
 func (a *Array[T]) Max() T {
-	if reflect.TypeOf(a.Items[0]).String() == "string" {
+	if reflect.TypeOf(a.Items[0]).Kind() == reflect.String {
 		log.Panicln("can not compare string")
 	}
 
@@ -247,7 +247,7 @@ func (a *AnyArray[T]) InsertAt(item T, index int) {
 
 func (a *Array[T]) Print() {
 	format := "%v"
-	if reflect.TypeOf(a.Items[0]).String() == "string" {
+	if reflect.TypeOf(a.Items[0]).Kind() == reflect.String {
 		format = "\"%v\""
 	}
 
@@ -263,7 +263,7 @@ func (a *Array[T]) Print() {
 
 func (a *AnyArray[T]) Print() {
 	format := "%v"
-	if reflect.TypeOf(a.Items[0]).String() == "string" {
+	if reflect.TypeOf(a.Items[0]).Kind() == reflect.String {
 		format = "\"%v\""
 	}
 

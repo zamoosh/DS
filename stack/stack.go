@@ -6,21 +6,21 @@ import (
 	"reflect"
 )
 
-type stack[T array.GenericType] struct {
-	content array.Array[T]
+type stack struct {
+	content array.AnyArray[interface{}]
 }
 
-func NewStack[T array.GenericType]() stack[T] {
-	return stack[T]{
-		content: array.NewArrayType[T](5),
+func NewStack() stack {
+	return stack{
+		content: array.NewArrayTypeAny[interface{}](5),
 	}
 }
 
-func (s *stack[T]) Push(item T) {
+func (s *stack) Push(item interface{}) {
 	s.content.Insert(item)
 }
 
-func (s *stack[T]) Pop() T {
+func (s *stack) Pop() interface{} {
 	item := s.Peek()
 
 	err := s.content.RemoveAt(s.content.Count - 1)
@@ -30,7 +30,7 @@ func (s *stack[T]) Pop() T {
 	return item
 }
 
-func (s *stack[T]) Peek() T {
+func (s *stack) Peek() interface{} {
 	if s.content.Count == 0 {
 		log.Panic("stack is empty")
 	}
@@ -38,40 +38,52 @@ func (s *stack[T]) Peek() T {
 	return item
 }
 
-func (s *stack[T]) IsEmpty() bool {
+func (s *stack) IsEmpty() bool {
 	if s.content.Count != 0 {
 		return false
 	}
 	return true
 }
 
-func (s *stack[T]) IsStable(exp interface{}) bool {
+func (s *stack) IsStable(exp any) bool {
 	if reflect.TypeOf(exp).Kind() != reflect.String {
 		log.Panicln("exp must be string")
 	}
 
-	switch ch := exp.(type) {
+	switch conExp := exp.(type) {
 	case string:
-		for i := range ch {
-			switch string(ch[i]) {
+		for i := range conExp {
+			char := conExp[i]
+			switch string(char) {
 			case "(", "[", "<":
-				s.Push(T(ch[i]))
+				s.Push(char)
 			case ")", "]", ">":
 				if s.IsEmpty() {
 					return false
 				}
-				s.Pop()
+				popped := s.Pop().(byte)
+				switch string(char) {
+				case ")":
+					if popped != '(' {
+						return false
+					}
+				case "]":
+					if popped != '[' {
+						return false
+					}
+				case ">":
+					if popped != '<' {
+						return false
+					}
+				}
 			}
 		}
 	default:
 		log.Panicln("Unsupported type")
 	}
-	if s.IsEmpty() {
-		return true
-	}
-	return false
+	return s.IsEmpty()
 }
 
-func (s *stack[T]) Print() {
+func (s *stack) Print() {
 	s.content.Print()
 }

@@ -1,13 +1,11 @@
 package main
 
-import "ds/array"
+import (
+	"ds/stack"
+)
 
 func main() {
-	items := array.NewArrayTypeAny[string](5)
-	items.Insert("a")
-	items.Insert("c")
-	items.Insert("c")
-	items.Insert("b")
-	items.Insert("b")
-	println(items.IndexOf("b"))
+	str := "{s<s(s)s>sdf(we)s{d}w[e<f>w(e)f[s]d]ewf}"
+	items := stack.NewStack()
+	println(items.IsStable(str))
 }
