@@ -4,21 +4,22 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"reflect"
 )
 
-type Array struct {
-	Items []interface{}
+type Array[T GenericType] struct {
+	Items []T
 	Count int
 }
 
-func NewArrayType(size int) Array {
-	return Array{
-		Items: make([]interface{}, size),
+func NewArrayType[T GenericType](size int) Array[T] {
+	return Array[T]{
+		Items: make([]T, size),
 		Count: 0,
 	}
 }
 
-func (a *Array) Insert(item int) {
+func (a *Array[T]) Insert(item T) {
 	if a.Count == len(a.Items) {
 		a.grow()
 	}
@@ -26,14 +27,15 @@ func (a *Array) Insert(item int) {
 	a.Count++
 }
 
-func (a *Array) RemoveAt(index int) error {
+func (a *Array[T]) RemoveAt(index int) error {
 	if index < 0 || index >= len(a.Items) {
 		return errors.New("Count is invalid")
 	}
 
 	// remove last index
+	var NIL T
 	if index == a.Count-1 {
-		a.Items[index] = nil
+		a.Items[index] = NIL
 		a.Count--
 		return nil
 	}
@@ -48,7 +50,7 @@ func (a *Array) RemoveAt(index int) error {
 	return nil
 }
 
-func (a *Array) IndexOf(item int) int {
+func (a *Array[T]) IndexOf(item T) int {
 	for i := 0; i < a.Count; i++ {
 		if item == a.Items[i] {
 			return i
@@ -57,19 +59,23 @@ func (a *Array) IndexOf(item int) int {
 	return -1
 }
 
-func (a *Array) Max() int {
-	item := 0
+func (a *Array[T]) Max() T {
+	if reflect.TypeOf(a.Items[0]).String() == "string" {
+		log.Panicln("can not compare string")
+	}
+
+	var item T
 	for i := 0; i < a.Count; i++ {
-		if a.Items[i].(int) >= item {
-			item = a.Items[i].(int)
+		if a.Items[i] >= item {
+			item = a.Items[i]
 		}
 	}
 	return item
 }
 
-func (a *Array) grow() {
+func (a *Array[T]) grow() {
 	if a.Count == len(a.Items) {
-		newArr := make([]interface{}, len(a.Items)*2)
+		newArr := make([]T, len(a.Items)*2)
 		for i := 0; i < a.Count; i++ {
 			newArr[i] = a.Items[i]
 		}
@@ -77,12 +83,12 @@ func (a *Array) grow() {
 	}
 }
 
-func (a *Array) Intersect(another *Array) array {
-	commons := NewArray(3)
+func (a *Array[T]) Intersect(another *Array[T]) Array[T] {
+	commons := NewArrayType[T](3)
 	for i := 0; i < a.Count; i++ {
 		for j := 0; j < another.Count; j++ {
 			if a.Items[i] == another.Items[j] {
-				commons.Insert(a.Items[i].(int))
+				commons.Insert(a.Items[i])
 			}
 		}
 	}
@@ -90,7 +96,7 @@ func (a *Array) Intersect(another *Array) array {
 	return commons.removeCommons()
 }
 
-func (a *Array) Contains(item int) bool {
+func (a *Array[T]) Contains(item T) bool {
 	for i := 0; i < a.Count; i++ {
 		if a.Items[i] == item {
 			return true
@@ -99,25 +105,25 @@ func (a *Array) Contains(item int) bool {
 	return false
 }
 
-func (a *Array) removeCommons() array {
-	unique := NewArray(3)
+func (a *Array[T]) removeCommons() Array[T] {
+	unique := NewArrayType[T](3)
 	for i := 0; i < a.Count; i++ {
-		if !unique.Contains(a.Items[i].(int)) {
-			unique.Insert(a.Items[i].(int))
+		if !unique.Contains(a.Items[i]) {
+			unique.Insert(a.Items[i])
 		}
 	}
 	return unique
 }
 
-func (a *Array) Reverse() array {
-	reverse := NewArray(a.Count)
+func (a *Array[T]) Reverse() Array[T] {
+	reverse := NewArrayType[T](a.Count)
 	for i := a.Count - 1; i >= 0; i-- {
-		reverse.Insert(a.Items[i].(int))
+		reverse.Insert(a.Items[i])
 	}
 	return reverse
 }
 
-func (a *Array) InsertAt(item int, index int) {
+func (a *Array[T]) InsertAt(item T, index int) {
 	if index == a.Count {
 		a.Insert(item)
 	} else if index == 0 {
@@ -143,16 +149,18 @@ func (a *Array) InsertAt(item int, index int) {
 	}
 }
 
-func (a *Array) Print() {
+func (a *Array[T]) Print() {
+	format := "%v"
+	if reflect.TypeOf(a.Items[0]).String() == "string" {
+		format = "\"%v\""
+	}
+
 	fmt.Printf("[")
 	for i := 0; i < a.Count; i++ {
-		fmt.Print(a.Items[i])
+		fmt.Printf(format, a.Items[i])
 		if i != a.Count-1 {
 			fmt.Printf(", ")
 		}
 	}
 	fmt.Printf("]\n")
 }
-
-// [1, 2, 2, 5] -> InsertAt(0, 2): index=2
-// [1, 2, 0, 2, 5]
