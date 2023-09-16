@@ -1,10 +1,13 @@
 package main
 
-import "ds/stack"
+import "ds/array"
 
 func main() {
-	str := "(1 + 2) * [3] <[swe]r([23])>"
-	
-	items := stack.NewStack[string]()
-	println(items.IsStable(str))
+	items := array.NewArrayTypeAny[string](5)
+	items.Insert("a")
+	items.Insert("c")
+	items.Insert("c")
+	items.Insert("b")
+	items.Insert("b")
+	println(items.IndexOf("b"))
 }
